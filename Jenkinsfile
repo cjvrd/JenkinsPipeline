@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         DIRECTORY_PATH = "home/usr/src"
-        STAGING_ENVIRONMENT = "stag env"
-        PRODUCTION_ENVIRONMENT = "prod env"
+        STAGING_ENVIRONMENT = "GCP Google Kubernetes Engine Cluster"
+        PRODUCTION_ENVIRONMENT = "GCP Google Kubernetes Engine Cluster"
     }
     stages {
         stage('BUILD') {
@@ -22,17 +22,20 @@ pipeline {
         }
         stage('CODE ANALYSIS') {
             steps{
-                echo "check the quality of the code"
+                echo "check the quality of the code using Checkstyle"
+                echo "check complete"
             }
         }
         stage('SECURITY SCAN') {
             steps{
-                echo "scan"
+                echo "perform code security scan using SNYK"
+                echo "scanned, no vulnerabilities found"
             }
         }
         stage('DEPLOY TO STAGING') {
             steps{
                 echo "deploy the application to a staging environment: $STAGING_ENVIRONMENT"
+                echo "deployed to staging successfully"
             }
         }
         stage('INTEGRATION TEST ON STAGING') {
@@ -44,12 +47,11 @@ pipeline {
         stage('DEPLOY TO PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
+                echo "deployed successfully"
             }
             post{
                 success{
-                    mail to: "cjvirdo@gmail.com",
-                    subject: "Build Status Email",
-                    body: "Deployed Successfully"
+                    emailext attachLog: true, body: '', subject: '', to: 'cjvirdo@gmail.com'
                 }
             }
         }
