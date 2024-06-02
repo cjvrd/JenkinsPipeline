@@ -17,7 +17,14 @@ pipeline {
             steps {
                 echo "run unit tests using JUnit"
                 echo "run integration tests using Selenium"
-                echo "tests pass"
+            }
+            post{
+                success{
+                    emailext attachLog: true, body: 'Initial Unit and Integration Tests Pass', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
+                failure{
+                    emailext attachLog: true, body: 'Initial Unit and Integration Tests Failed', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
             }
         }
         stage('CODE ANALYSIS') {
@@ -29,7 +36,14 @@ pipeline {
         stage('SECURITY SCAN') {
             steps{
                 echo "perform code security scan using SNYK"
-                echo "scanned, no vulnerabilities found"
+            }
+            post{
+                success{
+                    emailext attachLog: true, body: 'Security Scan Pass, No Vulnerabilities Found', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
+                failure{
+                    emailext attachLog: true, body: 'Security Scan Failed, Vulnerabilities Found', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
             }
         }
         stage('DEPLOY TO STAGING') {
@@ -41,18 +55,20 @@ pipeline {
         stage('INTEGRATION TEST ON STAGING') {
             steps{
                 echo "integration test using Selenium on staging server"
-                echo "tests pass"
+            }
+            post{
+                success{
+                    emailext attachLog: true, body: 'Integration Tests in Staging Pass', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
+                failure{
+                    emailext attachLog: true, body: 'Integration Tests in Staging Failed', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
+                }
             }
         }
         stage('DEPLOY TO PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
                 echo "deployed successfully"
-            }
-            post{
-                success{
-                    emailext attachLog: true, body: 'SUCCESSFULLY DEPLOYED', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
-                }
             }
         }
     }
