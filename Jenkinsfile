@@ -38,6 +38,7 @@ pipeline {
         stage('DEPLOY AND PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
+                echo "testing github trigger"
             }
         }
     }
