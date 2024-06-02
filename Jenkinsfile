@@ -38,7 +38,13 @@ pipeline {
         stage('DEPLOY AND PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
-                echo "testing github trigger"
+            }
+            post{
+                success{
+                    mail to: "cjvirdo@gmail.com"
+                    subject: "Build Status Email"
+                    body: "Deployed Successfully"
+                }
             }
         }
     }
