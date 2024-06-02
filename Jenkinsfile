@@ -2,49 +2,51 @@ pipeline {
     agent any
     environment {
         DIRECTORY_PATH = "home/usr/src"
-        TESTING_ENVIRONMENT = "testenv"
-        PRODUCTION_ENVIRONMENT = "christians environment"
+        STAGING_ENVIRONMENT = "stag env"
+        PRODUCTION_ENVIRONMENT = "prod env"
     }
     stages {
         stage('BUILD') {
             steps {
                 echo "fetch the source code from the directory path: $DIRECTORY_PATH"
                 echo "compile the code and generate any necessary artifacts"
+                echo "build using maven"
+                echo "build complete"
             }
         }
-        stage('TEST') {
+        stage('UNIT & INTEGRATION TEST') {
             steps {
-                echo "unit tests"
-                echo "integration tests"
+                echo "unit tests using JUnit"
+                echo "integration tests using Selenium"
+                echo "tests pass"
             }
         }
-        stage('CODE QUALITY CHECK') {
+        stage('CODE ANALYSIS') {
             steps{
                 echo "check the quality of the code"
             }
         }
-        stage('DEPLOY') {
+        stage('SECURITY SCAN') {
             steps{
-                echo "deploy the application to a testing environment: $TESTING_ENVIRONMENT"
+                echo "scan"
+                mail to: "cjvirdo@gmail.com",
+                attachmentsPattern: "**/*.log"
             }
         }
-        stage('APPROVAL') {
+        stage('DEPLOY TO STAGING') {
             steps{
-                echo "waiting for approval"
-                sleep 10
-                echo "approved"
+                echo "deploy the application to a staging environment: $STAGING_ENVIRONMENT"
             }
         }
-        stage('DEPLOY AND PRODUCTION') {
+        stage('INTEGRATION TEST ON STAGING') {
+            steps{
+                echo "integration test using Selenium on staging server"
+                echo "tests pass"
+            }
+        }
+        stage('DEPLOY TO PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
-            }
-            post{
-                success{
-                    mail to: "cjvirdo@gmail.com",
-                    subject: "Build Status Email",
-                    body: "Deployed Successfully"
-                }
             }
         }
     }
