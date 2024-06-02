@@ -29,8 +29,7 @@ pipeline {
         stage('SECURITY SCAN') {
             steps{
                 echo "scan"
-                mail to: "cjvirdo@gmail.com",
-                attachmentsPattern: "**/*.log"
+                mail to: "cjvirdo@gmail.com"
             }
         }
         stage('DEPLOY TO STAGING') {
