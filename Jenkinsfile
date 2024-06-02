@@ -49,7 +49,7 @@ pipeline {
                 success{
                     mail to: "cjvirdo@gmail.com",
                     subject: "Build Status Email",
-                    body: "Deployed Successfully",
+                    body: "Deployed Successfully"
                 }
             }
         }
