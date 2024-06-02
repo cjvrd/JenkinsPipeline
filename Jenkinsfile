@@ -9,15 +9,14 @@ pipeline {
         stage('BUILD') {
             steps {
                 echo "fetch the source code from the directory path: $DIRECTORY_PATH"
-                echo "compile the code and generate any necessary artifacts"
-                echo "build using maven"
+                echo "build project using maven"
                 echo "build complete"
             }
         }
         stage('UNIT & INTEGRATION TEST') {
             steps {
-                echo "unit tests using JUnit"
-                echo "integration tests using Selenium"
+                echo "run unit tests using JUnit"
+                echo "run integration tests using Selenium"
                 echo "tests pass"
             }
         }
@@ -29,7 +28,6 @@ pipeline {
         stage('SECURITY SCAN') {
             steps{
                 echo "scan"
-                mail to: "cjvirdo@gmail.com"
             }
         }
         stage('DEPLOY TO STAGING') {
@@ -46,6 +44,13 @@ pipeline {
         stage('DEPLOY TO PRODUCTION') {
             steps{
                 echo "deploy the code to the production environment: $PRODUCTION_ENVIRONMENT"
+            }
+            post{
+                success{
+                    mail to: "cjvirdo@gmail.com",
+                    subject: "Build Status Email",
+                    body: "Deployed Successfully",
+                }
             }
         }
     }
