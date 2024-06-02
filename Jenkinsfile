@@ -51,7 +51,7 @@ pipeline {
             }
             post{
                 success{
-                    emailext attachLog: true
+                    emailext attachLog: true, body: 'SUCCESSFULLY DEPLOYED', subject: 'PIPELINE STATUS', to: 'cjvirdo@gmail.com'
                 }
             }
         }
